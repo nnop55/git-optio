@@ -1,0 +1,134 @@
+<mat-drawer-container class="example-container" autosize>
+    <mat-drawer #drawer class="example-sidenav" mode="side" position="end">
+        <div class="drawer-content">
+            <div class="closebtn">
+                <i class="ri-close-fill" (click)="drawer.toggle()"></i>
+            </div>
+            <form #form="ngForm" (ngSubmit)="onFormSubmit(form)">
+                <div class="form-group">
+                    <div class="first-last-inp">
+                        <div class="first-group">
+                            <label>FirstName</label>
+                            <input ngModel name="firstName" type="text" required placeholder="Enter here"
+                                class="name-inp all-inp">
+                        </div>
+                        <div class="last-group">
+                            <label>LastName</label>
+                            <input ngModel name="lastName" type="text" required placeholder="Enter here"
+                                class="name-inp all-inp">
+                        </div>
+                    </div>
+                    <div class="email-status-inp">
+                        <div class="email-group">
+                            <label>Email</label>
+                            <input ngModel name="email" type="text" required placeholder="Enter here"
+                                class="email-inp all-inp">
+                        </div>
+                        <div class="status-group">
+                            <label>User Status</label>
+                            <select ngModel name="status" required class="all-inp status-inp">
+                                <option value=""></option>
+                                <option value="Active">Active</option>
+                                <option value="Cancelled">Cancelled</option>
+                                <option value="Done">Done</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="roles-inp">
+                        <div class="roles-group">
+                            <mat-form-field class="example-chip-list" appearance="fill">
+                                <mat-label>Roles</mat-label>
+                                <mat-chip-list #chipList aria-label="Fruit selection">
+                                    <mat-chip *ngFor="let role of roles" (removed)="remove(role)">
+                                        {{role.name}}
+                                        <button matChipRemove>
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
+                                    </mat-chip>
+                                    <input placeholder="Add Role..." [matChipInputFor]="chipList"
+                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                        [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+                                </mat-chip-list>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="cancel-save-btns">
+                        <div class="btn-sides">
+                            <div>
+                                <button (click)="drawer.toggle()">Cancel</button>
+                            </div>
+                            <div>
+                                <button type="submit" [disabled]="!form.valid">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </mat-drawer>
+    <div class="title">
+        <h1>Users</h1>
+    </div>
+
+    <div class="example-sidenav-content">
+        <div class="users-content">
+            <div class="top-right">
+                <div class="filter-input">
+                    <i class="ri-search-line"></i>
+                    <input type="text" placeholder="Search users">
+                </div>
+                <div class="add-btn">
+                    <button mat-stroked-button color="primary" (click)="drawer.toggle()">+ Add</button>
+                </div>
+            </div>
+            <div class="paginator-table">
+                <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+                    aria-label="Select page">
+                </mat-paginator>
+                <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <!-- Email Column -->
+                    <ng-container matColumnDef="Email">
+                        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="email-col" (click)="drawer.toggle()">
+                            {{element.Email}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Fist name Column -->
+                    <ng-container matColumnDef="Firstname">
+                        <mat-header-cell *matHeaderCellDef> Fist name </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.Firstname}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Last name Column -->
+                    <ng-container matColumnDef="Lastname">
+                        <mat-header-cell *matHeaderCellDef> Last name </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.Lastname}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Roles Column -->
+                    <ng-container matColumnDef="Roles">
+                        <mat-header-cell *matHeaderCellDef> Roles </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.Roles}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Status Column -->
+                    <ng-container matColumnDef="Status">
+                        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.Status}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Delete Column -->
+                    <ng-container matColumnDef="Delete">
+                        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="delete-icon"> <i [class]="element.Delete"></i>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+            </div>
+        </div>
+    </div>
+
+</mat-drawer-container>
